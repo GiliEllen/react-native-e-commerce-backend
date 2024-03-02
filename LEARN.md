@@ -38,6 +38,15 @@ For development, you will only need Node.js and a node global package, and npm
 |  POST  | /register |   create new user   |
 |  POST  |  /login   |  authenticate user  |
 
+### Cart /cart
+
+| Method | Endpoint  |      Description       |
+| :----: | :-------: | :--------------------: | ------------------- |
+|  GET   |   /:id    | get All userCart Items | <-- this is user id |
+|  POST  | /add-item | add item to user cart  |
+| DELETE |   /:id    | delete item from cart  | <-- cartItem id     |
+|  PUT   |   /:id    |   update Item amount   | <-- cartItem id     |
+
 ---
 
 ## Collections
@@ -56,3 +65,11 @@ For development, you will only need Node.js and a node global package, and npm
     colors: Array,
     sizes: Array,
     image: String
+
+### cart
+
+    productId: ObjectId,
+    userId: ObjectId,
+    amount: Number,
+    color: String,
+    size: String,
