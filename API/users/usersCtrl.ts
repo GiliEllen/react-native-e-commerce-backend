@@ -8,6 +8,7 @@ const EXPIRES_IN = process.env.EXPIRES_IN
 
 const createUser = async (req: Request, res: Response) => {
     try {
+        console.log(req.body)
         const user = new User(req.body)
         //check if user is already exists
         const ChkUser = await User.findOne({
@@ -28,7 +29,7 @@ const createUser = async (req: Request, res: Response) => {
 
         res.header('x-auth-header', token)
 
-        res.status(200).json('user added successfully')
+        res.status(200).send({ ok: true, msg: 'user added successfully' })
     } catch (err) {
         res.status(500).json({ message: 'Internal server error: ', err })
     }
@@ -52,6 +53,7 @@ const authUser = async (req: Request, res: Response) => {
         })
 
         res.header('x-auth-header', token)
+        res.send({ ok: true, user })
     } catch (err) {
         res.status(500).json({ message: 'Internal server error: ', err })
     }
@@ -72,7 +74,7 @@ const getSpecificUser = async (req: Request, res: Response) => {
 
         if (!user) return res.status(404).json('user does not exists')
 
-        res.status(200).json(user)
+        res.status(200).json({ ok: true, user })
     } catch (err) {
         res.status(500).json({ message: 'Internal server error: ', err })
     }
@@ -81,7 +83,7 @@ const getSpecificUser = async (req: Request, res: Response) => {
 const deleteUser = async (req: Request, res: Response) => {
     User.findByIdAndDelete({ _id: req.params.id })
         .then((user) =>
-            res.status(200).json({ message: 'User deleted successfully', user })
+            res.status(200).json({ ok: true, message: 'User deleted successfully', user })
         )
         .catch((err) => res.status(400).json(err))
 }
@@ -89,7 +91,7 @@ const deleteUser = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
     User.findByIdAndUpdate({ _id: req.params.id }, { $set: { $eq: req.body } })
         .then((user) =>
-            res.status(200).json({ message: 'User updated successfully', user })
+            res.status(200).json({ ok: true, message: 'User updated successfully', user })
         )
         .catch((err) => res.status(400).json(err))
 }
@@ -116,7 +118,7 @@ const changePassword = async (req: Request, res: Response) => {
 
         await user.save()
 
-        res.status(200).json('Password updated successfully')
+        res.status(200).json({ ok: true, message: 'Password updated successfully' })
     } catch (err) {
         res.status(500).json({ message: 'Internal server error: ', err })
     }

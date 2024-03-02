@@ -21,7 +21,7 @@ For development, you will only need Node.js and a node global package, and npm
 
 ## End points
 
-### Product
+### Product /products
 
 | Method | Endpoint |      Description       |
 | :----: | :------: | :--------------------: |
@@ -29,7 +29,7 @@ For development, you will only need Node.js and a node global package, and npm
 |  GET   |   /:id   | get a specific product |
 |  POST  |    /     |    add new product     |
 
-### User
+### User /users
 
 | Method | Endpoint  |     Description     |
 | :----: | :-------: | :-----------------: |
