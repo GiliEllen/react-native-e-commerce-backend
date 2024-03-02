@@ -2,7 +2,7 @@
   "name": "react-native-e-commerce-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,18 @@
   "bugs": {
     "url": "https://github.com/GiliEllen/react-native-e-commerce-backend/issues"
   },
-  "homepage": "https://github.com/GiliEllen/react-native-e-commerce-backend#readme"
+  "homepage": "https://github.com/GiliEllen/react-native-e-commerce-backend#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.2.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24"
+  }
 }
