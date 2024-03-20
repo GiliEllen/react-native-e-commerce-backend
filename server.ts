@@ -5,6 +5,8 @@ import morgan from "morgan"
 import helmet from "helmet"
 import errorMiddleware from './API/middlewares/error';
 import routes from "./API/routes"
+import cors from "cors"
+import { corsOptions } from './config/CorsOptions';
 
 const app = express()
 
@@ -20,6 +22,7 @@ mongoose.connect(mongodb_uri).then((res) => {
 
 
 app.use(express.json())
+app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }))
 // logger middleware
 app.use(morgan('dev'))
