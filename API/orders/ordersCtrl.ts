@@ -46,11 +46,34 @@ const getAllOrdersByUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         if (!id) throw new Error("no id in getAllOrdersByUser")
-        const ordersDB = await Order.findOne({ userId: id })
+        const ordersDB = await Order.find({ userId: id })
 
-        res.status(200).send({ ordersDB })
+        const populatesOrders = await populateCartItemsForOrders(ordersDB)
+
+        res.status(200).send({ orders: populatesOrders })
     } catch (err) {
         res.status(500).json(err)
+    }
+}
+async function populateCartItemsForOrders(orders) {
+    try {
+        const populatedOrders = [];
+
+        // Iterate through each order
+        for (const order of orders) {
+            // Find cart items for the current order
+            const cartItems = await CartModel.find({ orderId: order._id }).lean().exec();
+
+            // Add cart items to the current order
+            const orderWithCartItems = { ...order, cartItems };
+
+            // Add order with cart items to the array
+            populatedOrders.push(orderWithCartItems);
+        }
+
+        return populatedOrders;
+    } catch (error) {
+        throw new Error(`Error populating cart items for orders: ${error}`);
     }
 }
 
