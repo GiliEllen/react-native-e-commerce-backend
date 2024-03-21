@@ -89,7 +89,7 @@ const deleteUser = async (req: Request, res: Response) => {
 }
 
 const updateUser = async (req: Request, res: Response) => {
-    User.findByIdAndUpdate({ _id: req.params.id }, { $set: { $eq: req.body } })
+    User.findByIdAndUpdate(req.params.id, { email: req.body.email, name: req.body.name })
         .then((user) =>
             res.status(200).json({ ok: true, message: 'User updated successfully', user })
         )
