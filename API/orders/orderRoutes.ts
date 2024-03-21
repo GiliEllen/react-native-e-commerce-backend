@@ -3,7 +3,7 @@ import orderController from './ordersCtrl'
 
 const router: Router = express.Router()
 
-router.get('/:id', orderController.getAllOrderItems) // userID
+router.get('/:id', orderController.getAllOrderItems) // orderId
 router.get('/:id/all-orders', orderController.getAllOrdersByUser) // userID
 router.post('/:id', orderController.createOrder) // userID
 router.delete('/:id', orderController.deleteOrder) // orderID

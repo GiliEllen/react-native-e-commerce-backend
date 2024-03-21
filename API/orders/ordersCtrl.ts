@@ -6,7 +6,7 @@ import CartModel from '../cart/cartModal';
 
 const createOrder = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params; // userID
         if (!id) throw new Error("no id in createOrder")
 
         const pendingOrder = await Order.find({ userId: id, status: OrderStatus.PENDING })
@@ -20,7 +20,7 @@ const createOrder = async (req: Request, res: Response) => {
             const order = new Order({ userId: id, status: OrderStatus.PENDING })
 
             await order.save()
-            res.status(200).json(order)
+            res.status(200).send({ order, cartItems: [] })
         }
     } catch (err) {
         res.status(500).json(err)
@@ -30,21 +30,22 @@ const createOrder = async (req: Request, res: Response) => {
 
 const getAllOrderItems = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params; // orderId
         if (!id) throw new Error("no id in getAllOrderItems")
-        const pendingOrder = await Order.findOne({ userId: id, status: OrderStatus.PENDING })
+        const order = await Order.findById(id)
 
         //@ts-ignore
-        const cartItemsDB = await CartModel.find({ orderId: pendingOrder._id })
+        const cartItemsDB = await CartModel.find({ orderId: order._id })
 
-        if (pendingOrder) res.status(200).send({ order: pendingOrder, cartItems: cartItemsDB })
+        res.status(200).send({ order, cartItems: cartItemsDB })
     } catch (err) {
         res.status(500).json(err)
     }
 }
+
 const getAllOrdersByUser = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params; //userId
         if (!id) throw new Error("no id in getAllOrdersByUser")
         const ordersDB = await Order.find({ userId: id })
 
