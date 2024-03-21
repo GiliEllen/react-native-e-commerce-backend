@@ -42,6 +42,17 @@ const getAllOrderItems = async (req: Request, res: Response) => {
         res.status(500).json(err)
     }
 }
+const getAllOrdersByUser = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        if (!id) throw new Error("no id in getAllOrdersByUser")
+        const ordersDB = await Order.findOne({ userId: id })
+
+        res.status(200).send({ ordersDB })
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
 
 const finishOrder = async (req: Request, res: Response) => {
     try {
@@ -69,5 +80,6 @@ export default {
     deleteOrder,
     finishOrder,
     createOrder,
-    getAllOrderItems
+    getAllOrderItems,
+    getAllOrdersByUser
 }
