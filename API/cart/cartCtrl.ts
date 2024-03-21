@@ -3,9 +3,9 @@ import CartModel from './cartModal'
 
 const getAllCartItems = async (req: Request, res: Response) => {
     try {
-        const { userId } = req.params.id
-        const cartArray = await CartModel.find({ userId })
-        res.status(200).send({ pk: true, cart: cartArray })
+        const { orderId } = req.params.id
+        const cartArray = await CartModel.find({ orderId })
+        res.status(200).send({ ok: true, cart: cartArray })
     } catch (err) {
         res.status(500).send({ err })
     }
@@ -13,7 +13,7 @@ const getAllCartItems = async (req: Request, res: Response) => {
 
 // body: {
 //     productId: _id,
-//     userId: _id,
+//     orderId: _id,
 //     amount: Number,
 //     color: String,
 //     size: String,

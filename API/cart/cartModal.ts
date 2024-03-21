@@ -1,15 +1,15 @@
 import { Schema, model } from 'mongoose'
+import Order from '../orders/orderModels'
 import Product from '../products/productsModel'
-import User from '../users/userModel'
 
 const cartSchema = new Schema({
     productId: { type: Schema.Types.ObjectId, ref: Product },
-    userId: { type: Schema.Types.ObjectId, ref: User },
     amount: Number,
     color: String,
     size: String,
+    orderId: { type: Schema.Types.ObjectId, ref: Order }
 })
 
-const CartModel = model('users', cartSchema)
+const CartModel = model('cartitems', cartSchema)
 
 export default CartModel

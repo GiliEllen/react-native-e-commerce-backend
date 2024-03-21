@@ -3,8 +3,8 @@ import cartController from './cartCtrl'
 
 const router: Router = express.Router()
 
-router.get('/:id', cartController.getAllCartItems) //userId here
-router.post('/add-item', cartController.addItemToCart)
+router.get('/:id', cartController.getAllCartItems) //orderId here
+router.post('/', cartController.addItemToCart)
 router.delete('/:id', cartController.deleteItemFromCart) //cartItemId
 router.put('/:id', cartController.updateProductAmount) //cartItemId
 
