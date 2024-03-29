@@ -35,7 +35,7 @@ const getAllOrderItems = async (req: Request, res: Response) => {
         const order = await Order.findById(id)
 
         //@ts-ignore
-        const cartItemsDB = await CartModel.find({ orderId: order._id })
+        const cartItemsDB = await CartModel.find({ orderId: order._id }).populate(["productId"])
 
         res.status(200).send({ order, cartItems: cartItemsDB })
     } catch (err) {
@@ -56,6 +56,19 @@ const getAllOrdersByUser = async (req: Request, res: Response) => {
         res.status(500).json(err)
     }
 }
+const getAllOrdersByUserDone = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params; //userId
+        if (!id) throw new Error("no id in getAllOrdersByUser")
+        const ordersDB = await Order.find({ userId: id, status: OrderStatus.DONE })
+
+        const populatesOrders = await populateCartItemsForOrders(ordersDB)
+
+        res.status(200).send({ orders: populatesOrders })
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
 async function populateCartItemsForOrders(orders) {
     try {
         const populatedOrders = [];
@@ -63,7 +76,8 @@ async function populateCartItemsForOrders(orders) {
         // Iterate through each order
         for (const order of orders) {
             // Find cart items for the current order
-            const cartItems = await CartModel.find({ orderId: order._id }).lean().exec();
+            // const cartItems = await CartModel.find({ orderId: order._id }).lean().exec().populate(["pro"]);
+            const cartItems = await CartModel.find({ orderId: order._id }).populate(["productId"]);
 
             // Add cart items to the current order
             const orderWithCartItems = { ...order, cartItems };
@@ -105,5 +119,6 @@ export default {
     finishOrder,
     createOrder,
     getAllOrderItems,
-    getAllOrdersByUser
+    getAllOrdersByUser,
+    getAllOrdersByUserDone
 }
