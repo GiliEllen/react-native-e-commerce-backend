@@ -8,7 +8,9 @@ export enum OrderStatus {
 
 const orderSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: User },
-    status: { type: String, default: OrderStatus.PENDING }
+    status: { type: String, default: OrderStatus.PENDING },
+    createdAt: Date,
+    completedAt: Date || null
 })
 
 const Order = model('orders', orderSchema)

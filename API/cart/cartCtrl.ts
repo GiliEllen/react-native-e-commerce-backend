@@ -4,7 +4,7 @@ import CartModel from './cartModal'
 const getAllCartItems = async (req: Request, res: Response) => {
     try {
         const { id } = req.params.id
-        const cartArray = await CartModel.find({ orderId: id })
+        const cartArray = await CartModel.find({ orderId: id }).populate(["orderId", "productId"])
         res.status(200).send({ ok: true, cart: cartArray })
     } catch (err) {
         res.status(500).send({ err })

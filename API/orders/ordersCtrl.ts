@@ -17,7 +17,7 @@ const createOrder = async (req: Request, res: Response) => {
 
             res.status(200).send({ order: pendingOrder[0], cartItems: cartItemsDB })
         } else {
-            const order = new Order({ userId: id, status: OrderStatus.PENDING })
+            const order = new Order({ userId: id, status: OrderStatus.PENDING, createdAt: new Date(), completedAt: null })
 
             await order.save()
             res.status(200).send({ order, cartItems: [] })
@@ -83,7 +83,7 @@ const finishOrder = async (req: Request, res: Response) => {
         const { id } = req.params; // orderId
         if (!id) throw new Error("no id in finishOrder")
 
-        const pendingOrder = await Order.findByIdAndUpdate(id, { status: OrderStatus.DONE })
+        const pendingOrder = await Order.findByIdAndUpdate(id, { status: OrderStatus.DONE, completedAt: new Date() })
 
         res.status(200).json({ message: 'order closed successfully', pendingOrder })
     } catch (err) {
