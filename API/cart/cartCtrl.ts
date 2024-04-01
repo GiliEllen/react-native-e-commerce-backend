@@ -23,7 +23,7 @@ const addItemToCart = async (req: Request, res: Response) => {
         const cartItem = new CartModel(req.body)
 
         await cartItem.save()
-        res.status(200).send({ ok: true })
+        res.status(200).send({ ok: true , cartItem})
     } catch (err) {
         res.status(500).json(err)
     }
@@ -41,11 +41,15 @@ const deleteItemFromCart = async (req: Request, res: Response) => {
 //     amount: Number,
 // }
 const updateProductAmount = async (req: Request, res: Response) => {
-    CartModel.findByIdAndUpdate({ _id: req.params.id }, { $set: { $eq: req.body } })
-        .then((cartItem) =>
-            res.status(200).json({ message: 'Cart Item updated successfully', ok: true })
-        )
-        .catch((err) => res.status(400).json(err))
+    try {
+        const cartItem = await CartModel.findByIdAndUpdate(req.params.id, { amount: req.body.amount }, { new: true });
+        if (!cartItem) {
+            return res.status(404).send({ message: 'Cart Item not found' });
+        }
+        res.status(200).send({ message: 'Cart Item updated successfully', cartItem });
+    } catch (err) {
+        res.status(500).json({ err });
+    }
 }
 
 export default {
